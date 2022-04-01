@@ -62,6 +62,7 @@ def perform_login(request):
             data["nationality"] = profile[0].nationality
             data["email"] = profile[0].email
             data["data"] = profile[0].data
+            data["docNumber"] = profile[0].doc_id
             data["face"] = "http://aayez.com:888" + profile[0].face.url
             return JsonResponse({"status": "ok", "data": data})
         else:
