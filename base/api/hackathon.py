@@ -13,13 +13,14 @@ def register_person(request):
     nationality = request.GET['nationality']
     data = request.GET['data']
     face_id = request.GET['face_id']
+    image_id = request.GET['image_id']
     person = Profile()
     person.name = name
     person.email = email
     person.nationality = nationality
     person.face_id = face_id
     person.data = data
-    person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), face_id)), save=True)
+    person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
     it2 = get_image_it2(person.face.url)
     string_ints = [str(int) for int in it2]
     str_of_ints = ",".join(string_ints)
@@ -38,10 +39,10 @@ def get_face_id(request):
 
 def perform_login(request):
     email = request.GET['email']
-    face_id = request.GET['face_id']
+    image_id = request.GET['image_id']
     profile = Profile.objects.filter(email=email)
     if profile:
-        profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), face_id)),
+        profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
                                  save=True)
         it2_a = [int(i) for i in profile[0].it2.split(',')]
         it2_b = get_image_it2(profile[0].face_tmp.url)
