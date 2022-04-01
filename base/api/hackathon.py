@@ -20,12 +20,13 @@ def register_person(request):
     person.nationality = nationality
     person.face_id = face_id
     person.data = data
-    it2 = get_image_it2(person.face.url)
-    string_ints = [str(int) for int in it2]
-    str_of_ints = ",".join(string_ints)
-    person.it2 = str_of_ints
+
     try:
         person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
+        it2 = get_image_it2(person.face.url)
+        string_ints = [str(int) for int in it2]
+        str_of_ints = ",".join(string_ints)
+        person.it2 = str_of_ints
     except:
         return JsonResponse({"message": "already exist"}, status=404)
     return JsonResponse({"status": "ok"})
