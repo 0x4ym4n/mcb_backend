@@ -25,6 +25,7 @@ def register_person(request):
     string_ints = [str(int) for int in it2]
     str_of_ints = ",".join(string_ints)
     person.it2 = str_of_ints
+    person.save()
     return JsonResponse({"status": "ok"})
 
 
