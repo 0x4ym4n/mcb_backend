@@ -20,12 +20,14 @@ def register_person(request):
     person.nationality = nationality
     person.face_id = face_id
     person.data = data
-    person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
     it2 = get_image_it2(person.face.url)
     string_ints = [str(int) for int in it2]
     str_of_ints = ",".join(string_ints)
     person.it2 = str_of_ints
-    person.save()
+    try:
+        person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
+    except:
+        return JsonResponse({"message": "already exist"}, status=404)
     return JsonResponse({"status": "ok"})
 
 
@@ -54,7 +56,7 @@ def perform_login(request):
             data["nationality"] = profile[0].nationality
             data["email"] = profile[0].email
             data["data"] = profile[0].data
-            data["face"] = "http://aayez.com:888"+profile[0].face.url
+            data["face"] = "http://aayez.com:888" + profile[0].face.url
             return JsonResponse({"status": "ok", "data": data})
         else:
             return JsonResponse({"message": "face is not matching"}, status=404)
@@ -104,7 +106,7 @@ def get_image_it2(image):
         'Content-Type': 'application/json',
     }
     url = 'https://api-stg.truststamp.net/api/v2/proxy/bhash/encode/'
-    myobj = {'media_url': "http://aayez.com:888"+image,
+    myobj = {'media_url': "http://aayez.com:888" + image,
              "UUID": str(uuid.uuid4()),
              "return_now": True}
 
