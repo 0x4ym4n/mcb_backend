@@ -14,12 +14,14 @@ def register_person(request):
     data = request.GET['data']
     face_id = request.GET['face_id']
     image_id = request.GET['image_id']
+    doc_id = request.GET['doc_id']
     person = Profile()
     person.name = name
     person.email = email
     person.nationality = nationality
     person.face_id = face_id
     person.data = data
+    person.doc_id = doc_id
 
     try:
         person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
@@ -29,7 +31,7 @@ def register_person(request):
         person.it2 = str_of_ints
         person.save()
     except:
-        return JsonResponse({"message": "already exist"}, status=404)
+        return JsonResponse({"message": "This account is already registered, login using your Face ID"}, status=404)
     return JsonResponse({"status": "ok"})
 
 
@@ -61,7 +63,7 @@ def perform_login(request):
             data["face"] = "http://aayez.com:888" + profile[0].face.url
             return JsonResponse({"status": "ok", "data": data})
         else:
-            return JsonResponse({"message": "face is not matching"}, status=404)
+            return JsonResponse({"message": "Face is not matching"}, status=404)
 
     else:
         return JsonResponse({"message": "not found"}, status=404)
