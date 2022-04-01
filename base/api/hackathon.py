@@ -22,10 +22,11 @@ def register_person(request):
     person.face_id = face_id
     person.data = data
     person.doc_id = doc_id
+    token = truststamp_token()
 
     try:
         person.face.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)), save=True)
-        it2 = get_image_it2(person.face.url)
+        it2 = get_image_it2(person.face.url, token)
         string_ints = [str(int) for int in it2]
         str_of_ints = ",".join(string_ints)
         person.it2 = str_of_ints
@@ -49,10 +50,11 @@ def perform_login(request):
     image_id = request.GET['image_id']
     profile = Profile.objects.filter(email=email)
     if profile:
+        token = truststamp_token()
         profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
                                  save=True)
         it2_a = [int(i) for i in profile[0].it2.split(',')]
-        it2_b = get_image_it2(profile[0].face_tmp.url)
+        it2_b = get_image_it2(profile[0].face_tmp.url, token)
         match = it2_compare(it2_a, it2_b)
         if match:
             data = {}
@@ -103,8 +105,7 @@ def truststamp_token():
     return data["token"]
 
 
-def get_image_it2(image):
-    token = truststamp_token()
+def get_image_it2(image, token):
     headers = {
         'Authorization': 'JWT ' + token,
         'Content-Type': 'application/json',
