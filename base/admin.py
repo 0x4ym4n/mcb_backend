@@ -16,3 +16,4 @@ class PageAdmin(ImportExportModelAdmin):
         super(PageAdmin, self).__init__(model, admin_site)
 
 
+admin.site.register(Profile, PageAdmin)
