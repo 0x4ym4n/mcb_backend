@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 from base.api.company import send_email, search_company, get_company_data
-from base.api.hackathon import truststamp_token, register_person, get_image_it2, perform_login
+from base.api.hackathon import truststamp_token, register_person, get_image_it2, perform_login, get_face_id
 from base.api.utils import getSDKToken
 from baseproject import settings
 
@@ -30,7 +30,6 @@ urlpatterns = [
                   path(r'company/send_email/', send_email),
                   path(r'uqudo/generate_token/', getSDKToken),
                   path(r'hackathon/register', register_person),
-                  path(r'hackathon/token', truststamp_token),
-                  path(r'hackathon/generate_it2', get_image_it2),
+                  path(r'hackathon/get_face_id', get_face_id),
                   path(r'hackathon/perform_login', perform_login),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
