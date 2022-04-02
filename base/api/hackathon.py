@@ -96,6 +96,7 @@ def perform_login_with_image(request):
                     data["email"] = profile[0].email
                     data["data"] = profile[0].data
                     data["docNumber"] = profile[0].doc_id
+                    data["verified"] = profile[0].verify
                     data["face"] = "http://aayez.com:888" + profile[0].face.url
                     return JsonResponse({"status": "ok", "data": data})
                 else:
