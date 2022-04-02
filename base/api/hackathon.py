@@ -3,6 +3,7 @@ import uuid
 import requests
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from base.models import Profile
 
@@ -71,7 +72,7 @@ def perform_login(request):
     else:
         return JsonResponse({"message": "not found"}, status=404)
 
-
+@csrf_exempt
 def perform_login_with_image(request):
     email = request.GET['email']
     image = request.FILES['image']
@@ -99,7 +100,7 @@ def perform_login_with_image(request):
             return JsonResponse({"message": "Face is not matching"}, status=404)
 
     else:
-        return JsonResponse({"message": "This email doesn't match any record"}, status=404)
+        return JsonResponse({"message": "Incorrect login information"}, status=404)
 
 
 def saveImage(token, face_id):
