@@ -182,7 +182,7 @@ def pad(image, token):
         'Authorization': 'JWT ' + token,
         'Content-Type': 'application/json',
     }
-    url = 'https://api-stg.truststamp.net/api/v2/proxy/pad/combined'
+    url = 'https://api-stg.truststamp.net/api/v2/proxy/pad/face/'
     myobj = {'media_url': "http://aayez.com:888" + image,
              "UUID": str(uuid.uuid4()),
              "return_now": True}
