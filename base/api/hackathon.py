@@ -84,7 +84,7 @@ def perform_login_with_image(request):
         #                          save=True)
         profile[0].face_tmp.save(str(uuid.uuid4())  + ".jpeg", image, save=True)
         fake = pad(profile[0].face_tmp.url, token)
-        if not fake:
+        if fake:
             it2_a = [int(i) for i in profile[0].it2.split(',')]
             it2_b = get_image_it2(profile[0].face_tmp.url, token)
             match = it2_compare(it2_a, it2_b)
