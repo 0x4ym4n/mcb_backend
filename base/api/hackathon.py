@@ -48,7 +48,7 @@ def register_person(request):
 
     except:
         return JsonResponse({"message": "This account is already registered, login using your Face ID"}, status=404)
-    return JsonResponse({"status": "ok", "data": {"photo": "http://aayez.com:888" +person.face.url}})
+    return JsonResponse({"status": "ok", "data": {"photo": "http://aayez.com:9999" +person.face.url}})
 
 
 def get_face_id(request):
@@ -78,7 +78,7 @@ def perform_login(request):
             data["email"] = profile[0].email
             data["data"] = profile[0].data
             data["docNumber"] = profile[0].doc_id
-            data["face"] = "http://aayez.com:888" + profile[0].face.url
+            data["face"] = "http://aayez.com:9999" + profile[0].face.url
             return JsonResponse({"status": "ok", "data": data})
         else:
             return JsonResponse({"message": "Face is not matching"}, status=404)
@@ -112,7 +112,7 @@ def perform_login_with_image(request):
                     data["data"] = profile[0].data
                     data["docNumber"] = profile[0].doc_id
                     data["verified"] = profile[0].verify
-                    data["face"] = "http://aayez.com:888" + profile[0].face.url
+                    data["face"] = "http://aayez.com:9999" + profile[0].face.url
                     return JsonResponse({"status": "ok", "data": data})
                 else:
                     return JsonResponse({"message": "Face is not matching"}, status=404)
@@ -166,7 +166,7 @@ def get_image_it2(image, token):
         'Content-Type': 'application/json',
     }
     url = 'https://api-stg.truststamp.net/api/v2/proxy/bhash/encode/'
-    myobj = {'media_url': "http://aayez.com:888" + image,
+    myobj = {'media_url': "http://aayez.com:9999" + image,
              "UUID": str(uuid.uuid4()),
              "return_now": True}
 
@@ -202,7 +202,7 @@ def pad(image, token):
         'Content-Type': 'application/json',
     }
     url = 'https://api-stg.truststamp.net/api/v2/proxy/pad/face/'
-    myobj = {'media_url': "http://aayez.com:888" + image,
+    myobj = {'media_url': "http://aayez.com:9999" + image,
              "UUID": str(uuid.uuid4()),
              "return_now": True}
 
