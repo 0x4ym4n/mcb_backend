@@ -82,7 +82,7 @@ def perform_login_with_image(request):
         token = truststamp_token()
         # profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
         #                          save=True)
-        profile[0].face_tmp.save(str(uuid.uuid4()), image, save=True)
+        profile[0].face_tmp.save(str(uuid.uuid4())  + ".jpeg", image, save=True)
 
         it2_a = [int(i) for i in profile[0].it2.split(',')]
         it2_b = get_image_it2(profile[0].face_tmp.url, token)
