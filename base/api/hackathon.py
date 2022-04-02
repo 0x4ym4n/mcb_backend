@@ -2,10 +2,14 @@ import uuid
 
 import requests
 from django.core.files.base import ContentFile
+from django.core.mail import EmailMultiAlternatives
 from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 
 from base.models import Profile
+from baseproject import settings
 
 
 def register_person(request):
@@ -32,6 +36,16 @@ def register_person(request):
         str_of_ints = ",".join(string_ints)
         person.it2 = str_of_ints
         person.save()
+        subject = "uqudoBank: verify your email address"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+        html_content = render_to_string('templates_verify_email.html',
+                                        {'sender': "Hackathon"})
+        text_content = strip_tags(html_content)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
     except:
         return JsonResponse({"message": "This account is already registered, login using your Face ID"}, status=404)
     return JsonResponse({"status": "ok"})
