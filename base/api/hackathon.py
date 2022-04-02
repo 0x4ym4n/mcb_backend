@@ -78,33 +78,36 @@ def perform_login_with_image(request):
     image = request.FILES['image']
 
     profile = Profile.objects.filter(email=email)
-    if profile:
-        token = truststamp_token()
-        # profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
-        #                          save=True)
-        profile[0].face_tmp.save(str(uuid.uuid4())  + ".jpeg", image, save=True)
-        fake = pad(profile[0].face_tmp.url, token)
-        if fake:
-            it2_a = [int(i) for i in profile[0].it2.split(',')]
-            it2_b = get_image_it2(profile[0].face_tmp.url, token)
-            match = it2_compare(it2_a, it2_b)
-            if match:
-                data = {}
-                data["name"] = profile[0].name
-                data["nationality"] = profile[0].nationality
-                data["email"] = profile[0].email
-                data["data"] = profile[0].data
-                data["docNumber"] = profile[0].doc_id
-                data["face"] = "http://aayez.com:888" + profile[0].face.url
-                return JsonResponse({"status": "ok", "data": data})
+    try:
+        if profile:
+            token = truststamp_token()
+            # profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
+            #                          save=True)
+            profile[0].face_tmp.save(str(uuid.uuid4())  + ".jpeg", image, save=True)
+            fake = pad(profile[0].face_tmp.url, token)
+            if fake:
+                it2_a = [int(i) for i in profile[0].it2.split(',')]
+                it2_b = get_image_it2(profile[0].face_tmp.url, token)
+                match = it2_compare(it2_a, it2_b)
+                if match:
+                    data = {}
+                    data["name"] = profile[0].name
+                    data["nationality"] = profile[0].nationality
+                    data["email"] = profile[0].email
+                    data["data"] = profile[0].data
+                    data["docNumber"] = profile[0].doc_id
+                    data["face"] = "http://aayez.com:888" + profile[0].face.url
+                    return JsonResponse({"status": "ok", "data": data})
+                else:
+                    return JsonResponse({"message": "Face is not matching"}, status=404)
             else:
-                return JsonResponse({"message": "Face is not matching"}, status=404)
+                return JsonResponse({"message": "Fake face is provided"}, status=404)
+
+
         else:
-            return JsonResponse({"message": "Fake face is provided"}, status=404)
-
-
-    else:
-        return JsonResponse({"message": "Incorrect login information"}, status=404)
+            return JsonResponse({"message": "Incorrect login information"}, status=404)
+    except:
+        return JsonResponse({"message": "Face is not detected"}, status=404)
 
 
 def saveImage(token, face_id):

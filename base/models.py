@@ -15,4 +15,5 @@ class Profile(models.Model):
     data = models.CharField(max_length=10000, blank=True)
     face = ImageField(upload_to='static/images', blank=True, pregenerated_sizes=["large", "medium"])
     face_tmp = ImageField(upload_to='static/images', blank=True, pregenerated_sizes=["large", "medium"])
+    verify = models.BooleanField(default=False, blank=True)
     it2 = models.CharField(max_length=10000, blank=True)
