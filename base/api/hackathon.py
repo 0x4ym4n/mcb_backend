@@ -48,7 +48,7 @@ def register_person(request):
 
     except:
         return JsonResponse({"message": "This account is already registered, login using your Face ID"}, status=404)
-    return JsonResponse({"status": "ok", "data": {"photo": person.face.url}})
+    return JsonResponse({"status": "ok", "data": {"photo": "http://aayez.com:888" +person.face.url}})
 
 
 def get_face_id(request):
