@@ -48,7 +48,7 @@ def register_person(request):
 
     except:
         return JsonResponse({"message": "This account is already registered, login using your Face ID"}, status=404)
-    return JsonResponse({"status": "ok"})
+    return JsonResponse({"status": "ok", "data": {"photo": person.face.url}})
 
 
 def get_face_id(request):
@@ -86,6 +86,7 @@ def perform_login(request):
     else:
         return JsonResponse({"message": "not found"}, status=404)
 
+
 @csrf_exempt
 def perform_login_with_image(request):
     email = request.GET['email']
@@ -97,7 +98,7 @@ def perform_login_with_image(request):
             token = truststamp_token()
             # profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", ContentFile(saveImage(getImageToken(), image_id)),
             #                          save=True)
-            profile[0].face_tmp.save(str(uuid.uuid4())  + ".jpeg", image, save=True)
+            profile[0].face_tmp.save(str(uuid.uuid4()) + ".jpeg", image, save=True)
             fake = pad(profile[0].face_tmp.url, token)
             if fake:
                 it2_a = [int(i) for i in profile[0].it2.split(',')]
@@ -210,6 +211,7 @@ def pad(image, token):
     print(x.text)
     data = x.json()
     return data["data"]["verdict"]
+
 
 def it2_compare(it2_a, it2_b):
     headers = {
